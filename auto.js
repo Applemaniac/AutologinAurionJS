@@ -26,7 +26,7 @@ async function startBrowser() {
             '--single-process', // <- this one doesn't works in Windows
             '--disable-gpu'
         ],
-        headless: false
+        headless: true
     }
 
     return puppeteer.launch(options)
@@ -66,6 +66,8 @@ let promise = new Promise((resolve, reject) => {
         // On met le timeout à 0
         await page.setDefaultNavigationTimeout(0);
         await connection(page, key);
+        await page.waitForNavigation({waitUntil: ['load']});
+        await browser.close();
     }else{
         console.error("Already connected or cannot reach wifi page!");
     }
